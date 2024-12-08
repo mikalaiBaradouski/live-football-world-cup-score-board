@@ -1,6 +1,9 @@
 package org.example.mbaradouski.service;
 
-public interface Scoreboard {
+/**
+ * Class which in charge of managing scoreboard
+ */
+public interface ScoreboardManager {
 
     /**
      * Start a new match, assuming initial score 0 – 0 and add it to the scoreboard.

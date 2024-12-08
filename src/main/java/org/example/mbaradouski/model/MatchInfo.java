@@ -1,4 +1,4 @@
 package org.example.mbaradouski.model;
 
-public class MatchInfo {
+public record MatchInfo(Score score) {
 }

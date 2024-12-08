@@ -1,4 +1,4 @@
 package org.example.mbaradouski.model;
 
-public class Match {
+public record Match(String homeTeam, String awayTeam) {
 }
