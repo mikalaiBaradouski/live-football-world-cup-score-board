@@ -4,6 +4,9 @@ import lombok.NonNull;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
+import org.example.mbaradouski.model.ScoreBoardSummary;
+
+import java.util.List;
 
 /**
  * Class which in charge of managing scoreboard
@@ -26,4 +29,9 @@ public interface ScoreboardManager {
     MatchInfo finishMatch(@NonNull Match match);
 
     MatchInfo updateScore(@NonNull Match match, @NonNull Score score);
+
+    /**
+     * @return scoreboard summary
+     */
+    List<ScoreBoardSummary> getSummary();
 }

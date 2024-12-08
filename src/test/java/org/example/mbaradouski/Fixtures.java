@@ -23,6 +23,10 @@ public class Fixtures {
         return new MatchInfo(new Score(0, 0), OffsetDateTime.now());
     }
 
+    public static MatchInfo validUpdatedMatchInfo() {
+        return new MatchInfo(validUpdateScore(), OffsetDateTime.now());
+    }
+
     public static Score validUpdateScore() {
         int homeScore = RandomUtils.secure().randomInt(0, 10);
         int awayScore = RandomUtils.secure().randomInt(0, 10);

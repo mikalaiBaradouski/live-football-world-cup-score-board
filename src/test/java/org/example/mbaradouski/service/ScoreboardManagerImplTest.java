@@ -3,6 +3,7 @@ package org.example.mbaradouski.service;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
+import org.example.mbaradouski.model.ScoreBoardSummary;
 import org.example.mbaradouski.repository.ScoreboardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,15 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.example.mbaradouski.Fixtures.validMatchInfo;
 import static org.example.mbaradouski.Fixtures.validScore;
 import static org.example.mbaradouski.Fixtures.validUpdateScore;
+import static org.example.mbaradouski.Fixtures.validUpdatedMatchInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -113,6 +117,40 @@ class ScoreboardManagerImplTest {
                 () -> scoreboardManager.updateScore(match, null));
 
         assertThat(ex).hasMessage("score is marked non-null but is null");
+    }
+
+    @Test
+    void getSummary_thenReturnSummary() {
+        Match firstMatch = validMatch();
+        MatchInfo firstMatchInfo = validUpdatedMatchInfo();
+        Match secondMatch = validMatch();
+        MatchInfo secondMatchInfo = validUpdatedMatchInfo();
+        Map<Match, MatchInfo> matches = Map.of(firstMatch, firstMatchInfo, secondMatch, secondMatchInfo);
+        when(scoreboardRepository.findAll())
+                .thenReturn(matches);
+
+        List<ScoreBoardSummary> summary = scoreboardManager.getSummary();
+
+        assertThat(summary).hasSize(2);
+        assertThat(summary)
+                .usingRecursiveAssertion()
+                .isEqualTo(mapToScoreboardSummaryList(matches));
+    }
+
+    private List<ScoreBoardSummary> mapToScoreboardSummaryList(Map<Match, MatchInfo> matches) {
+        return matches.entrySet().stream()
+                .map(ScoreboardManagerImplTest::mapToScoreboardSummary)
+                .toList();
+    }
+
+    private static ScoreBoardSummary mapToScoreboardSummary(Map.Entry<Match, MatchInfo> entry) {
+        Match match = entry.getKey();
+        MatchInfo matchInfo = entry.getValue();
+        return new ScoreBoardSummary(match.homeTeam(),
+                match.awayTeam(),
+                matchInfo.score().homeScore(),
+                matchInfo.score().awayScore(),
+                matchInfo.startDateTime());
     }
 
 }
