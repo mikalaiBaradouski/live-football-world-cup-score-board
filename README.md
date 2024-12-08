@@ -9,3 +9,4 @@ This library provides a ScoreboardManager interface for managing scoreboards in 
 ### Notes/assumptions:
 - I add more commits than necessary so you can see my progress and adherence to TDD.
 - It's better to create custom exceptions. I use more or less generic one to speed up implementation and simplicity.
+- Since models are immutable it's not a problem at the moment. But It's necessary to split input and repo models.
