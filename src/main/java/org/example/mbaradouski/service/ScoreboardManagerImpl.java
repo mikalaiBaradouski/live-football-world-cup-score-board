@@ -13,8 +13,7 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
     protected final ScoreboardRepository scoreboardRepository;
 
     @Override
-    public void startMatch(String homeTeam, String awayTeam) {
-        Match match = new Match(homeTeam, awayTeam);
+    public void startMatch(Match match) {
         MatchInfo matchInfo = new MatchInfo(new Score(INITIAL_MATCH_SCORE, INITIAL_MATCH_SCORE));
         scoreboardRepository.addMatch(match, matchInfo);
     }

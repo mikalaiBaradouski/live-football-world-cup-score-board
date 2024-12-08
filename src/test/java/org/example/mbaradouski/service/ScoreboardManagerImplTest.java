@@ -31,7 +31,7 @@ class ScoreboardManagerImplTest {
         String awayTeam = secure().nextAlphabetic(10);
 
         assertDoesNotThrow(() ->
-                scoreboardManager.startMatch(homeTeam, awayTeam));
+                scoreboardManager.startMatch(new Match(homeTeam, awayTeam)));
 
         Match expectedMatch = new Match(homeTeam, awayTeam);
         int initialScore = 0;
