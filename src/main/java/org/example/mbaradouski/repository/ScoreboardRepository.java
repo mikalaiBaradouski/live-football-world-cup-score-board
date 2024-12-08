@@ -10,7 +10,7 @@ public interface ScoreboardRepository {
     /**
      * @throws IllegalArgumentException if match is already exists
      */
-    void addMatch(Match match, MatchInfo matchInfo);
+    MatchInfo addMatch(Match match, MatchInfo matchInfo);
 
     /**
      * @return leaderboard as is

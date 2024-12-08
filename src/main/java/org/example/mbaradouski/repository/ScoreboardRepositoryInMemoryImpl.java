@@ -11,8 +11,8 @@ public final class ScoreboardRepositoryInMemoryImpl implements ScoreboardReposit
     private final Map<Match, MatchInfo> matches = new ConcurrentHashMap<>();
 
     @Override
-    public void addMatch(Match match, MatchInfo matchInfo) {
-        matches.compute(match, (key, value) -> {
+    public MatchInfo addMatch(Match match, MatchInfo matchInfo) {
+        return matches.compute(match, (key, value) -> {
             if (value != null) {
                 throw new IllegalArgumentException("Match already exists");
             }

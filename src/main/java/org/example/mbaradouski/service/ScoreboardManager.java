@@ -10,8 +10,10 @@ public interface ScoreboardManager {
 
     /**
      * Start a new match, assuming initial score 0 – 0 and add it to the scoreboard.
+     *
+     * @return initial match info
      */
-    void startMatch(Match match);
+    MatchInfo startMatch(Match match);
 
     /**
      * Finish match currently in progress.

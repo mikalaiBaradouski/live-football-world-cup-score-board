@@ -13,9 +13,9 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
     protected final ScoreboardRepository scoreboardRepository;
 
     @Override
-    public void startMatch(Match match) {
+    public MatchInfo startMatch(Match match) {
         MatchInfo matchInfo = new MatchInfo(new Score(INITIAL_MATCH_SCORE, INITIAL_MATCH_SCORE));
-        scoreboardRepository.addMatch(match, matchInfo);
+        return scoreboardRepository.addMatch(match, matchInfo);
     }
 
     @Override

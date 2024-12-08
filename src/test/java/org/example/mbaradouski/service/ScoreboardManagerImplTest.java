@@ -13,9 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.example.mbaradouski.Fixtures.validMatchInfo;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,16 +26,17 @@ class ScoreboardManagerImplTest {
     ScoreboardRepository scoreboardRepository;
 
     @Test
-    @DisplayName("start match then add it to repo with initial score(0, 0)")
+    @DisplayName("start match then add it to repo with initial score(0, 0) and return match info")
     void startMatch() {
         Match match = validMatch();
-
-        assertDoesNotThrow(() ->
-                scoreboardManager.startMatch(match));
-
         int initialScore = 0;
         MatchInfo expectedMatchInfo = new MatchInfo(new Score(initialScore, initialScore));
-        verify(scoreboardRepository).addMatch(match, expectedMatchInfo);
+        when(scoreboardRepository.addMatch(match, expectedMatchInfo))
+                .thenReturn(expectedMatchInfo);
+
+        MatchInfo result = scoreboardManager.startMatch(match);
+
+        assertEquals(expectedMatchInfo, result);
     }
 
     @Test

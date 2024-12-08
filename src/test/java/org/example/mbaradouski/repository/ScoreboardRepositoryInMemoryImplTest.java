@@ -29,11 +29,13 @@ class ScoreboardRepositoryInMemoryImplTest {
     }
 
     @Test
-    void addMatch_whenAdded_thenDoNotThrowException() {
+    void addMatch_whenAdded_thenReturnMatchInfo() {
         Match match = validMatch();
         MatchInfo matchInfo = validMatchInfo();
 
-        assertDoesNotThrow(() -> repository.addMatch(match, matchInfo));
+        MatchInfo result = repository.addMatch(match, matchInfo);
+
+        assertThat(result).isEqualTo(matchInfo);
     }
 
     @Test
