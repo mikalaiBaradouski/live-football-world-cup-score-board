@@ -5,9 +5,10 @@ import org.example.mbaradouski.model.MatchInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class ScoreboardRepositoryInMemoryImpl implements ScoreboardRepository {
-    private final Map<Match, MatchInfo> matches = new HashMap<>();
+    private final Map<Match, MatchInfo> matches = new ConcurrentHashMap<>();
 
     @Override
     public void addMatch(Match match, MatchInfo matchInfo) {
