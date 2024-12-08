@@ -11,7 +11,10 @@ import org.example.mbaradouski.repository.ScoreboardRepository;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.List;
+
+import static java.util.Comparator.reverseOrder;
 
 @RequiredArgsConstructor
 public class ScoreboardManagerImpl implements ScoreboardManager {
@@ -49,6 +52,14 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
                             matchInfo.score().awayScore(),
                             matchInfo.startDateTime());
                 })
+                .sorted(compareByTotalOrderReversedOrder().thenComparing(ScoreBoardSummary::startDateTime, reverseOrder()))
                 .toList();
     }
+
+    private static Comparator<ScoreBoardSummary> compareByTotalOrderReversedOrder() {
+        return Comparator.comparing(
+                scoreBoardSummary -> scoreBoardSummary.homeTeamScore() + scoreBoardSummary.awayTeamScore(),
+                reverseOrder());
+    }
+
 }

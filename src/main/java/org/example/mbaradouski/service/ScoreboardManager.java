@@ -31,7 +31,7 @@ public interface ScoreboardManager {
     MatchInfo updateScore(@NonNull Match match, @NonNull Score score);
 
     /**
-     * @return scoreboard summary
+     * @return scoreboard summary sorted by totalScore desc and then by startedDateTime desc
      */
     List<ScoreBoardSummary> getSummary();
 }

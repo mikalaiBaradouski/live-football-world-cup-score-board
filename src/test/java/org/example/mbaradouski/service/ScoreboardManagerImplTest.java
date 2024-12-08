@@ -8,6 +8,9 @@ import org.example.mbaradouski.repository.ScoreboardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,9 +19,14 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.example.mbaradouski.Fixtures.validMatchInfo;
@@ -135,6 +143,50 @@ class ScoreboardManagerImplTest {
         assertThat(summary)
                 .usingRecursiveAssertion()
                 .isEqualTo(mapToScoreboardSummaryList(matches));
+    }
+
+    @ParameterizedTest
+    @MethodSource("biggerToSmallerTotalScores")
+    void getSummary_thenSummarySortedByTotalScoreDesc(Score biggerTotalScore, Score smallerTotalScore) {
+        Map<Match, MatchInfo> matches = new LinkedHashMap<>();
+        matches.put(validMatch(), new MatchInfo(smallerTotalScore, OffsetDateTime.now()));
+        matches.put(validMatch(), new MatchInfo(biggerTotalScore, OffsetDateTime.now()));
+
+        when(scoreboardRepository.findAll())
+                .thenReturn(matches);
+
+        List<ScoreBoardSummary> result = scoreboardManager.getSummary();
+
+        assertThat(result).hasSize(2);
+        Function<ScoreBoardSummary, Integer> keyExtractor = summary -> summary.homeTeamScore() + summary.awayTeamScore();
+        assertThat(result)
+                .isSortedAccordingTo(comparing(keyExtractor, Comparator.reverseOrder()));
+    }
+
+    @Test
+    void getSummary_whenSummaryHasTotalScore_thenSortByStartedDateTimeAsc() {
+        Score score = validScore();
+        Map<Match, MatchInfo> matches = new LinkedHashMap<>();
+        matches.put(validMatch(), new MatchInfo(score, OffsetDateTime.now().minusMinutes(1)));
+        matches.put(validMatch(), new MatchInfo(score, OffsetDateTime.now()));
+
+        when(scoreboardRepository.findAll())
+                .thenReturn(matches);
+
+        List<ScoreBoardSummary> result = scoreboardManager.getSummary();
+
+        assertThat(result).hasSize(2);
+        assertThat(result)
+                .isSortedAccordingTo(comparing(ScoreBoardSummary::startDateTime, Comparator.reverseOrder()));
+    }
+
+    public static Stream<Arguments> biggerToSmallerTotalScores() {
+        return Stream.of(
+                Arguments.of(new Score(0, 1), new Score(0, 0)),
+                Arguments.of(new Score(1, 0), new Score(0, 0)),
+                Arguments.of(new Score(5, 5), new Score(9, 0)),
+                Arguments.of(new Score(5, 5), new Score(0, 9))
+        );
     }
 
     private List<ScoreBoardSummary> mapToScoreboardSummaryList(Map<Match, MatchInfo> matches) {
