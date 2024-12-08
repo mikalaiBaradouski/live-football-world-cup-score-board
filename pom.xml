@@ -4,7 +4,7 @@
 
     <groupId>org.example.mbaradouski</groupId>
     <artifactId>live-football-world-cup-score-board</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>live-football-world-cup-score-board</name>
