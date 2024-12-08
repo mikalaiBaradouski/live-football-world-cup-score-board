@@ -16,4 +16,10 @@ public interface ScoreboardRepository {
      * @return leaderboard as is
      */
     Map<Match, MatchInfo> findAll();
+
+
+    /**
+     * @throws IllegalArgumentException if match is not found
+     */
+    MatchInfo removeMatch(Match match);
 }

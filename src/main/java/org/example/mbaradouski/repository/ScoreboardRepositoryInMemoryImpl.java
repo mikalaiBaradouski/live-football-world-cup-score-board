@@ -24,4 +24,13 @@ public final class ScoreboardRepositoryInMemoryImpl implements ScoreboardReposit
     public Map<Match, MatchInfo> findAll() {
         return new HashMap<>(matches);
     }
+
+    @Override
+    public MatchInfo removeMatch(Match match) {
+        MatchInfo result = matches.remove(match);
+        if (result == null) {
+            throw new IllegalArgumentException("Match not found");
+        }
+        return result;
+    }
 }

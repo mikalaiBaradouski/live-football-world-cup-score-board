@@ -90,6 +90,28 @@ class ScoreboardRepositoryInMemoryImplTest {
         assertThat(secondFindAll).hasSize(1);
     }
 
+    @Test
+    void removeMatch_whenMatchExist_thenRemove() {
+        Match match = validMatch();
+        MatchInfo matchInfo = validMatchInfo();
+        repository.addMatch(match, matchInfo);
+
+        MatchInfo result = repository.removeMatch(match);
+
+        assertThat(result).isEqualTo(matchInfo);
+    }
+
+    @Test
+    void removeMatch_whenMatchNotExist_thenThrowException() {
+        Match match = validMatch();
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> repository.removeMatch(match));
+
+        assertThat(ex.getMessage()).isEqualTo("Match not found");
+    }
+
+
     static class AddMatchWorker implements Runnable {
 
         private final Pair<Match, MatchInfo> pair;

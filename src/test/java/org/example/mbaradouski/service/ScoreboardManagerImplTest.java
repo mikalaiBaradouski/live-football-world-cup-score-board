@@ -9,11 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.example.mbaradouski.Fixtures.validMatch;
+import static org.example.mbaradouski.Fixtures.validMatchInfo;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ScoreboardManagerImplTest {
@@ -34,6 +37,18 @@ class ScoreboardManagerImplTest {
 
         int initialScore = 0;
         MatchInfo expectedMatchInfo = new MatchInfo(new Score(initialScore, initialScore));
-        Mockito.verify(scoreboardRepository).addMatch(match, expectedMatchInfo);
+        verify(scoreboardRepository).addMatch(match, expectedMatchInfo);
+    }
+
+    @Test
+    void finishMatch_thenReturnFinalMatchInfo() {
+        Match match = validMatch();
+        MatchInfo expectedMatchInfo = validMatchInfo();
+        when(scoreboardRepository.removeMatch(match))
+                .thenReturn(expectedMatchInfo);
+
+        MatchInfo result = scoreboardManager.finishMatch(match);
+
+        assertEquals(expectedMatchInfo, result);
     }
 }
