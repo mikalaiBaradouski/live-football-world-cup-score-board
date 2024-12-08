@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
-import org.example.mbaradouski.model.ScoreBoardSummary;
+import org.example.mbaradouski.model.ScoreboardSummary;
 import org.example.mbaradouski.repository.ScoreboardRepository;
 
 import java.time.Clock;
@@ -41,24 +41,24 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
     }
 
     @Override
-    public List<ScoreBoardSummary> getSummary() {
+    public List<ScoreboardSummary> getSummary() {
         return scoreboardRepository.findAll().entrySet().stream()
                 .map(entry -> {
                     Match match = entry.getKey();
                     MatchInfo matchInfo = entry.getValue();
-                    return new ScoreBoardSummary(match.homeTeam(),
+                    return new ScoreboardSummary(match.homeTeam(),
                             match.awayTeam(),
                             matchInfo.score().homeScore(),
                             matchInfo.score().awayScore(),
                             matchInfo.startDateTime());
                 })
-                .sorted(compareByTotalOrderReversedOrder().thenComparing(ScoreBoardSummary::startDateTime, reverseOrder()))
+                .sorted(compareByTotalOrderReversedOrder().thenComparing(ScoreboardSummary::startDateTime, reverseOrder()))
                 .toList();
     }
 
-    private static Comparator<ScoreBoardSummary> compareByTotalOrderReversedOrder() {
+    private static Comparator<ScoreboardSummary> compareByTotalOrderReversedOrder() {
         return Comparator.comparing(
-                scoreBoardSummary -> scoreBoardSummary.homeTeamScore() + scoreBoardSummary.awayTeamScore(),
+                scoreboardSummary -> scoreboardSummary.homeTeamScore() + scoreboardSummary.awayTeamScore(),
                 reverseOrder());
     }
 

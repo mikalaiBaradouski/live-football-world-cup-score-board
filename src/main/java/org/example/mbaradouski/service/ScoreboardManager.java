@@ -4,7 +4,7 @@ import lombok.NonNull;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
-import org.example.mbaradouski.model.ScoreBoardSummary;
+import org.example.mbaradouski.model.ScoreboardSummary;
 
 import java.util.List;
 
@@ -33,5 +33,5 @@ public interface ScoreboardManager {
     /**
      * @return scoreboard summary sorted by totalScore desc and then by startedDateTime desc
      */
-    List<ScoreBoardSummary> getSummary();
+    List<ScoreboardSummary> getSummary();
 }

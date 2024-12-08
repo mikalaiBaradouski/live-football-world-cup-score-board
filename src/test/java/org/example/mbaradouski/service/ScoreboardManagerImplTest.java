@@ -3,7 +3,7 @@ package org.example.mbaradouski.service;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
-import org.example.mbaradouski.model.ScoreBoardSummary;
+import org.example.mbaradouski.model.ScoreboardSummary;
 import org.example.mbaradouski.repository.ScoreboardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -137,7 +137,7 @@ class ScoreboardManagerImplTest {
         when(scoreboardRepository.findAll())
                 .thenReturn(matches);
 
-        List<ScoreBoardSummary> summary = scoreboardManager.getSummary();
+        List<ScoreboardSummary> summary = scoreboardManager.getSummary();
 
         assertThat(summary).hasSize(2);
         assertThat(summary)
@@ -155,10 +155,10 @@ class ScoreboardManagerImplTest {
         when(scoreboardRepository.findAll())
                 .thenReturn(matches);
 
-        List<ScoreBoardSummary> result = scoreboardManager.getSummary();
+        List<ScoreboardSummary> result = scoreboardManager.getSummary();
 
         assertThat(result).hasSize(2);
-        Function<ScoreBoardSummary, Integer> keyExtractor = summary -> summary.homeTeamScore() + summary.awayTeamScore();
+        Function<ScoreboardSummary, Integer> keyExtractor = summary -> summary.homeTeamScore() + summary.awayTeamScore();
         assertThat(result)
                 .isSortedAccordingTo(comparing(keyExtractor, Comparator.reverseOrder()));
     }
@@ -173,11 +173,11 @@ class ScoreboardManagerImplTest {
         when(scoreboardRepository.findAll())
                 .thenReturn(matches);
 
-        List<ScoreBoardSummary> result = scoreboardManager.getSummary();
+        List<ScoreboardSummary> result = scoreboardManager.getSummary();
 
         assertThat(result).hasSize(2);
         assertThat(result)
-                .isSortedAccordingTo(comparing(ScoreBoardSummary::startDateTime, Comparator.reverseOrder()));
+                .isSortedAccordingTo(comparing(ScoreboardSummary::startDateTime, Comparator.reverseOrder()));
     }
 
     public static Stream<Arguments> biggerToSmallerTotalScores() {
@@ -189,16 +189,16 @@ class ScoreboardManagerImplTest {
         );
     }
 
-    private List<ScoreBoardSummary> mapToScoreboardSummaryList(Map<Match, MatchInfo> matches) {
+    private List<ScoreboardSummary> mapToScoreboardSummaryList(Map<Match, MatchInfo> matches) {
         return matches.entrySet().stream()
                 .map(ScoreboardManagerImplTest::mapToScoreboardSummary)
                 .toList();
     }
 
-    private static ScoreBoardSummary mapToScoreboardSummary(Map.Entry<Match, MatchInfo> entry) {
+    private static ScoreboardSummary mapToScoreboardSummary(Map.Entry<Match, MatchInfo> entry) {
         Match match = entry.getKey();
         MatchInfo matchInfo = entry.getValue();
-        return new ScoreBoardSummary(match.homeTeam(),
+        return new ScoreboardSummary(match.homeTeam(),
                 match.awayTeam(),
                 matchInfo.score().homeScore(),
                 matchInfo.score().awayScore(),

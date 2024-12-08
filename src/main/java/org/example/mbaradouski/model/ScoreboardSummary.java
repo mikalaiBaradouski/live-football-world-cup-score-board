@@ -2,7 +2,7 @@ package org.example.mbaradouski.model;
 
 import java.time.OffsetDateTime;
 
-public record ScoreBoardSummary(
+public record ScoreboardSummary(
         String homeTeam,
         String awayTeam,
         int homeTeamScore,
