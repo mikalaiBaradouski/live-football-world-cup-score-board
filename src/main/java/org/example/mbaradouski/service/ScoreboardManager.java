@@ -1,7 +1,9 @@
 package org.example.mbaradouski.service;
 
+import lombok.NonNull;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
+import org.example.mbaradouski.model.Score;
 
 /**
  * Class which in charge of managing scoreboard
@@ -13,14 +15,15 @@ public interface ScoreboardManager {
      *
      * @return initial match info
      */
-    MatchInfo startMatch(Match match);
+    MatchInfo startMatch(@NonNull Match match);
 
     /**
      * Finish match currently in progress.
      * Delete it from the scoreboard.
+     *
      * @return final match info
      */
-    MatchInfo finishMatch(Match match);
+    MatchInfo finishMatch(@NonNull Match match);
 
-    MatchInfo updateScore(Match match, Score score);
+    MatchInfo updateScore(@NonNull Match match, @NonNull Score score);
 }

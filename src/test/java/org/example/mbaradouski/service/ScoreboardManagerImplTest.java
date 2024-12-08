@@ -11,10 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.example.mbaradouski.Fixtures.validMatchInfo;
+import static org.example.mbaradouski.Fixtures.validScore;
 import static org.example.mbaradouski.Fixtures.validUpdateScore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,6 +44,14 @@ class ScoreboardManagerImplTest {
     }
 
     @Test
+    void startMatch_whenMatchNull_thenThrowException() {
+        NullPointerException ex = assertThrows(NullPointerException.class,
+                () -> scoreboardManager.startMatch(null));
+
+        assertThat(ex).hasMessage("match is marked non-null but is null");
+    }
+
+    @Test
     void finishMatch_thenReturnFinalMatchInfo() {
         Match match = validMatch();
         MatchInfo expectedMatchInfo = validMatchInfo();
@@ -50,6 +61,14 @@ class ScoreboardManagerImplTest {
         MatchInfo result = scoreboardManager.finishMatch(match);
 
         assertEquals(expectedMatchInfo, result);
+    }
+
+    @Test
+    void finishMatch_whenMatchNull_thenThrowException() {
+        NullPointerException ex = assertThrows(NullPointerException.class,
+                () -> scoreboardManager.finishMatch(null));
+
+        assertThat(ex).hasMessage("match is marked non-null but is null");
     }
 
     @Test
@@ -63,6 +82,26 @@ class ScoreboardManagerImplTest {
         MatchInfo matchInfo = scoreboardManager.updateScore(match, score);
 
         assertEquals(expectedMatchInfo, matchInfo);
+    }
+
+    @Test
+    void updateScore_whenMatchNull_thenThrowException() {
+        Score score = validScore();
+
+        NullPointerException ex = assertThrows(NullPointerException.class,
+                () -> scoreboardManager.updateScore(null, score));
+
+        assertThat(ex).hasMessage("match is marked non-null but is null");
+    }
+
+    @Test
+    void updateScore_whenScoreNull_thenThrowException() {
+        Match match = validMatch();
+
+        NullPointerException ex = assertThrows(NullPointerException.class,
+                () -> scoreboardManager.updateScore(match, null));
+
+        assertThat(ex).hasMessage("score is marked non-null but is null");
     }
 
 }

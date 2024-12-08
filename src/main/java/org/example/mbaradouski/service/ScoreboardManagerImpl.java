@@ -1,5 +1,6 @@
 package org.example.mbaradouski.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
@@ -13,17 +14,18 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
     protected final ScoreboardRepository scoreboardRepository;
 
     @Override
-    public MatchInfo startMatch(Match match) {
+    public MatchInfo startMatch(@NonNull Match match) {
         MatchInfo matchInfo = new MatchInfo(new Score(INITIAL_MATCH_SCORE, INITIAL_MATCH_SCORE));
         return scoreboardRepository.addMatch(match, matchInfo);
     }
 
     @Override
-    public MatchInfo finishMatch(Match match) {
+    public MatchInfo finishMatch(@NonNull Match match) {
         return scoreboardRepository.removeMatch(match);
     }
 
-    public MatchInfo updateScore(Match match, Score score) {
+    @Override
+    public MatchInfo updateScore(@NonNull Match match, @NonNull Score score) {
         return scoreboardRepository.updateScore(match, score);
     }
 }
