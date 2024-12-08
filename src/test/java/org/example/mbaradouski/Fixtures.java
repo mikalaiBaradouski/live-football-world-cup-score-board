@@ -6,6 +6,8 @@ import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
 
+import java.time.OffsetDateTime;
+
 public class Fixtures {
     public static Score validScore() {
         return new Score(0, 0);
@@ -18,7 +20,7 @@ public class Fixtures {
     }
 
     public static MatchInfo validMatchInfo() {
-        return new MatchInfo(new Score(0, 0));
+        return new MatchInfo(new Score(0, 0), OffsetDateTime.now());
     }
 
     public static Score validUpdateScore() {

@@ -4,6 +4,7 @@ import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
 import org.example.mbaradouski.model.Score;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +42,7 @@ public final class ScoreboardRepositoryInMemoryImpl implements ScoreboardReposit
             if (value == null) {
                 throw new IllegalArgumentException("Match not found");
             }
-            return new MatchInfo(score);
+            return new MatchInfo(score, OffsetDateTime.now());
         });
     }
 }
