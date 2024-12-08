@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.apache.commons.lang3.RandomStringUtils.secure;
+import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,15 +27,13 @@ class ScoreboardManagerImplTest {
     @Test
     @DisplayName("start match then add it to repo with initial score(0, 0)")
     void startMatch() {
-        String homeTeam = secure().nextAlphabetic(10);
-        String awayTeam = secure().nextAlphabetic(10);
+        Match match = validMatch();
 
         assertDoesNotThrow(() ->
-                scoreboardManager.startMatch(new Match(homeTeam, awayTeam)));
+                scoreboardManager.startMatch(match));
 
-        Match expectedMatch = new Match(homeTeam, awayTeam);
         int initialScore = 0;
         MatchInfo expectedMatchInfo = new MatchInfo(new Score(initialScore, initialScore));
-        Mockito.verify(scoreboardRepository).addMatch(expectedMatch, expectedMatchInfo);
+        Mockito.verify(scoreboardRepository).addMatch(match, expectedMatchInfo);
     }
 }
