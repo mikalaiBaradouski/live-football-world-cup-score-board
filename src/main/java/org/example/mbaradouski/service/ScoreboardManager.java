@@ -21,4 +21,6 @@ public interface ScoreboardManager {
      * @return final match info
      */
     MatchInfo finishMatch(Match match);
+
+    MatchInfo updateScore(Match match, Score score);
 }

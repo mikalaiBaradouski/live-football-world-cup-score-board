@@ -2,6 +2,7 @@ package org.example.mbaradouski.repository;
 
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
+import org.example.mbaradouski.model.Score;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,5 +33,15 @@ public final class ScoreboardRepositoryInMemoryImpl implements ScoreboardReposit
             throw new IllegalArgumentException("Match not found");
         }
         return result;
+    }
+
+    @Override
+    public MatchInfo updateScore(Match match, Score score) {
+        return matches.compute(match, (key, value) -> {
+            if (value == null) {
+                throw new IllegalArgumentException("Match not found");
+            }
+            return new MatchInfo(score);
+        });
     }
 }

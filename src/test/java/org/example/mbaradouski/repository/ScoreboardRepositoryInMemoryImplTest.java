@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.mbaradouski.model.Match;
 import org.example.mbaradouski.model.MatchInfo;
+import org.example.mbaradouski.model.Score;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.example.mbaradouski.Fixtures.validMatchInfo;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.example.mbaradouski.Fixtures.validUpdateScore;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -109,6 +110,29 @@ class ScoreboardRepositoryInMemoryImplTest {
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> repository.removeMatch(match));
+
+        assertThat(ex.getMessage()).isEqualTo("Match not found");
+    }
+
+    @Test
+    void updateScore_whenMatchExist_thenUpdateScore() {
+        Match match = validMatch();
+        MatchInfo matchInfo = validMatchInfo();
+        repository.addMatch(match, matchInfo);
+        Score expectedScore = validUpdateScore();
+
+        MatchInfo result = repository.updateScore(match, expectedScore);
+
+        assertThat(result.score()).isEqualTo(expectedScore);
+    }
+
+    @Test
+    void updateScore_whenMatchNotExist_thenThrowException() {
+        Match match = validMatch();
+        Score score = validUpdateScore();
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> repository.updateScore(match, score));
 
         assertThat(ex.getMessage()).isEqualTo("Match not found");
     }

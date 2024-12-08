@@ -22,4 +22,8 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
     public MatchInfo finishMatch(Match match) {
         return scoreboardRepository.removeMatch(match);
     }
+
+    public MatchInfo updateScore(Match match, Score score) {
+        return scoreboardRepository.updateScore(match, score);
+    }
 }

@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.example.mbaradouski.Fixtures.validMatch;
 import static org.example.mbaradouski.Fixtures.validMatchInfo;
+import static org.example.mbaradouski.Fixtures.validUpdateScore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -50,4 +51,18 @@ class ScoreboardManagerImplTest {
 
         assertEquals(expectedMatchInfo, result);
     }
+
+    @Test
+    void updateScore_thenReturnUpdatedMatchInfo() {
+        Match match = validMatch();
+        Score score = validUpdateScore();
+        MatchInfo expectedMatchInfo = new MatchInfo(score);
+        when(scoreboardRepository.updateScore(match, score))
+                .thenReturn(expectedMatchInfo);
+
+        MatchInfo matchInfo = scoreboardManager.updateScore(match, score);
+
+        assertEquals(expectedMatchInfo, matchInfo);
+    }
+
 }
